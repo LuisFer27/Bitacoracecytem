@@ -3,9 +3,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
-
+/****/
 public class DataBitacora {
  
 	private static String controlador ="com.mysql.cj.jdbc.Driver";
@@ -24,7 +28,7 @@ public class DataBitacora {
 		}
 	}
 
-
+/****/
 public Connection conectar() {
 	Connection conexion=null;
 	try {
@@ -37,7 +41,7 @@ public Connection conectar() {
 	return conexion;
 }
 
-
+/****/
 public boolean registrarAlumno() {
 	DataBitacora conexion=new DataBitacora();
 	Connection cn=null;
@@ -47,17 +51,17 @@ public boolean registrarAlumno() {
 	try {
 		cn=conexion.conectar();
 		
-		String query="INSERT INTO contactos VALUES(?,?,?,?,?,?)";
+		String query="INSERT INTO contactos(noControl, nombrePlantel, horaEntrada, horaSalida, fecha) VALUES(?,?,?,?,?)";
 		ps=cn.prepareStatement(query);
-		ps.setString(1,BitacoraCecytem.id);
-		ps.setString(2, BitacoraCecytem.noControl);
-		ps.setString(3, BitacoraCecytem.nombrePlantel);
-		ps.setString(4, BitacoraCecytem.horaEntrada);
-		ps.setString(5, BitacoraCecytem.horaSalida);
-		ps.setString(6, BitacoraCecytem.fecha);
+		//ps.setString(1,BitacoraCecytem.id);
+		ps.setString(1, BitacoraCecytem.noControl);
+		ps.setString(2, BitacoraCecytem.nombrePlantel);
+		ps.setString(3, BitacoraCecytem.horaEntrada);
+		ps.setString(4, BitacoraCecytem.horaSalida);
+		ps.setString(5, BitacoraCecytem.fecha);
 	
-		String id=BitacoraCecytem.id;
-		String query2="SELECT * FROM contactos WHERE idContacto=?";
+		String id=BitacoraCecytem.noControl;
+		String query2="SELECT * FROM contactos WHERE noControl=?";
 		ps2=cn.prepareStatement(query2);
 		ps2.setString(1,id);
 		rs=ps2.executeQuery();
@@ -76,7 +80,7 @@ public boolean registrarAlumno() {
 	return resultado;
 }
 
-
+/****/
 public boolean consultarAlumno() {
 	DataBitacora conexion=new DataBitacora();
 	Connection cn=null;
@@ -86,7 +90,7 @@ public boolean consultarAlumno() {
 	try {
 		cn=conexion.conectar();
 		String id=JOptionPane.showInputDialog("Id a Buscar");
-		String query="SELECT * FROM contactos WHERE idContacto=?";
+		String query="SELECT * FROM contactos WHERE noControl=?";
 		ps=cn.prepareStatement(query);
 		ps.setString(1, id);
 		rs=ps.executeQuery();
@@ -112,7 +116,7 @@ public boolean consultarAlumno() {
 	return resultado;
 	
 }
-
+/****/
 public boolean actualizarAlumno() {
 	DataBitacora conexion=new DataBitacora();
 	Connection cn=null;
@@ -127,11 +131,11 @@ public boolean actualizarAlumno() {
    final String he = BitacoraCecytem.horaEntrada;
    final String hs = BitacoraCecytem.horaSalida;
    final String fe = BitacoraCecytem.fecha;
-   final String query = "UPDATE contactos SET idContacto = '"+id+"', noControl = '"+noc+"', nombrePlantel = '"+nom+"', horaEntrada= '"+he+"', horaSalida= '"+hs+"', fecha= '"+fe+"' WHERE idContacto = '"+id+"'";
+   final String query = "UPDATE contactos SET idContacto = '"+id+"', noControl = '"+noc+"', nombrePlantel = '"+nom+"', horaEntrada= '"+he+"', horaSalida= '"+hs+"', fecha= '"+fe+"' WHERE noControl = '"+noc+"'";
    ps = cn.prepareStatement(query);
-   final String query2= "SELECT * FROM contactos WHERE idContacto= ?";
+   final String query2= "SELECT * FROM contactos WHERE noControl= ?";
    ps2=cn.prepareStatement(query2);
-   ps2.setString(1, id);
+   ps2.setString(1, noc);
    rs=ps2.executeQuery();
    if(rs.next()==true) {
       ps.executeUpdate();
@@ -146,6 +150,9 @@ public boolean actualizarAlumno() {
                  }
               return resultado;
              }
+
+
+/****/
 public boolean eliminarAlumno() {
 	DataBitacora conexion=new DataBitacora();
 	Connection cn= null;
@@ -154,7 +161,7 @@ public boolean eliminarAlumno() {
 	try{
 		cn=conexion.conectar();
 		String id=JOptionPane.showInputDialog("ID A ELIMINAR");
-		String query= "DELETE FROM contactos WHERE idContacto=?";
+		String query= "DELETE FROM contactos WHERE noControl=?";
 		ps=cn.prepareStatement(query);
 		ps.setString(1,id);
 		int cant=ps.executeUpdate();
@@ -175,4 +182,51 @@ public boolean eliminarAlumno() {
 return resultado;
 
 }
+
+//public List<BitacoraCecytem> obtenerAlumnos() {
+   // List<BitacoraCecytem> alumnos = new ArrayList<>();
+    //Connection cn = null;
+    //PreparedStatement ps = null;
+    //ResultSet rs = null;
+    
+    //try {
+        //cn = conectar();
+        //String query = "SELECT * FROM contactos";
+       // ps = cn.prepareStatement(query);
+       // rs = ps.executeQuery();
+
+        //while (rs.next()) {
+           // BitacoraCecytem alumno = new BitacoraCecytem();  
+         //   alumno.id = rs.getString(1);
+        //    alumno.noControl = rs.getString(2);
+        //    alumno.nombrePlantel = rs.getString(3);
+          //  alumno.horaEntrada = rs.getString(4);
+      //      alumno.horaSalida = rs.getString(5);
+         //   alumno.fecha = rs.getString(6);
+           // alumnos.add(alumno);
+       // }
+    //} catch (SQLException e) {
+      //  e.printStackTrace();
+   //     JOptionPane.showMessageDialog(null, "Ocurrió un problema, inténtelo más tarde");
+  //  } finally {
+       // try {
+          //  if (rs != null) rs.close();
+         //   if (ps != null) ps.close();
+        //    if (cn != null) cn.close();
+       // } catch (SQLException e) {
+         //   e.printStackTrace();
+       // }
+    //}
+  //  return alumnos;
+//}
+	
 }
+
+
+
+
+
+
+
+
+
