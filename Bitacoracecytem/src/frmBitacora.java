@@ -1,3 +1,12 @@
+/**
+ * Nombre del proyecto:Bitacoracecytem
+ * Descripción:Aplicación para llevar un control de registro de alumnos que estan en un área especifica 
+ * Fecha:04/07/2024
+ * Autor:Luis Fernando Mendez Barrera
+ * Versión 1.0.0
+ */
+
+//importaciones
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JButton;
@@ -8,34 +17,31 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-import com.github.lgooddatepicker.components.TimePicker;
-import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
-import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.TimePicker;
+import com.github.lgooddatepicker.components.TimePickerSettings;
+import javax.swing.JTextArea;
 
 
+
+// clase frm bitacora en donde se vera la interfaz grafica manejada en spring 
 public class frmBitacora {
-
+    //componentes de la aplicación donde se alamcenara la información declarados
 	private JFrame frmBitacora;
 	private JTextField tfNoControl;
-	private JTextField tfNombre;
-	//private JTextField tfHoraEntrada;
-	//private JTextField tfHoraSalida;
-	//private JTextField tfFecha;
-	private DateTimeFormatter dateFormatter;
-		private TimePicker tpHoraEntrada;
-    private TimePicker tpHoraSalida;
-    private DatePicker dtFecha;
-	DataBitacora conexion= new DataBitacora();
+	private TimePicker tpHoraEntrada;
+	private TimePicker tpHoraSalida;
+	private DatePicker dpFecha;
+	private JTextArea taNombre;
+	//referncial archivo de conexión a la bd donde se mandara a llamar los apartados 
+    DataBitacora conexion= new DataBitacora();
+    //referencia al archivo para obtener y configurar los valores dentro de la aplicación 
 	BitacoraCecytem var=new BitacoraCecytem();
-
-
-	//private JTable tabAlumno;
 
 	/**
 	 * Launch the application.
@@ -56,7 +62,7 @@ public class frmBitacora {
 	}
 
 	/**
-	 * Create the application.
+	 * Crea la aplicación y la inicializa con todas la propiedades y clases .
 	 */
 	public frmBitacora() {
 		initialize();
@@ -64,271 +70,156 @@ public class frmBitacora {
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Initialize inicializa todo el contenido de java swing almacenado en un jframe.
 	 */
 	private void initialize() {
 		frmBitacora = new JFrame();
+		//nombre del programa 
 		frmBitacora.setTitle("Alumno");
 		frmBitacora.setBounds(100, 100, 754, 651);
 		frmBitacora.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmBitacora.getContentPane().setLayout(null);
-		
+		//etiqueta número de control en relación con el alúmno 
 		JLabel lbNoControl = new JLabel("Número de Control");
 		lbNoControl.setBounds(42, 38, 98, 15);
 		lbNoControl.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		frmBitacora.getContentPane().add(lbNoControl);
-		
+		//campo de texto número de control
 		tfNoControl = new JTextField();
 		tfNoControl.setBounds(171, 36, 96, 19);
 		tfNoControl.addKeyListener(new KeyAdapter() {
+			//validación de 10 caracteres
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if(tfNoControl.getText().length()>=10) {
 					e.consume();
 				}
+				char c =e.getKeyChar();
+				if(!Character.isLetterOrDigit(c)) {
+					e.consume();
+				}
+				
 			}
 		});
 		frmBitacora.getContentPane().add(tfNoControl);
 		tfNoControl.setColumns(10);
-		
-		tfNombre = new JTextField();
-		tfNombre.setBounds(171, 101, 96, 19);
-		tfNombre.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				if(tfNombre.getText().length()>=100) {
-					e.consume();
-				}
-			}
-		});
-		
+		//etiqueta nombre de la institución
 		JLabel lbNombreInstitución = new JLabel("Nombre de la institución");
 		lbNombreInstitución.setBounds(42, 103, 124, 15);
 		lbNombreInstitución.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		frmBitacora.getContentPane().add(lbNombreInstitución);
-		frmBitacora.getContentPane().add(tfNombre);
-		tfNombre.setColumns(10);
-		
+		//etiqueta hora de entrada
 		JLabel lbHoraEntrada = new JLabel("Hora de entrada");
 		lbHoraEntrada.setBounds(42, 183, 86, 15);
 		lbHoraEntrada.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		frmBitacora.getContentPane().add(lbHoraEntrada);
-		
-		//tfHoraEntrada = new JTextField();
-		//tfHoraEntrada.setBounds(171, 181, 96, 19);
-		//tfHoraEntrada.addKeyListener(new KeyAdapter() {
-		//	@Override
-		//	public void keyTyped(KeyEvent e) {
-		//		if(tfHoraEntrada.getText().length()>=5) {
-		//			e.consume();
-		//		}
-		//	}
-		//});
-		//frmBitacora.getContentPane().add(tfHoraEntrada);
-		//tfHoraEntrada.setColumns(10);
-		//
-		//tabAlumno = new JTable();
-		//tabAlumno.setColumnSelectionAllowed(true);
-		//tabAlumno.setCellSelectionEnabled(true);
-		//tabAlumno.setShowHorizontalLines(true);
-		//tabAlumno.setShowVerticalLines(true);
-		//tabAlumno.setModel(new DefaultTableModel(
-		//		new Object[][] {},
-		//		
-		//		new String[] {"ID", "Número de Control", "Nombre", "Hora de Entrada", "Hora de Salida", "Fecha"}
-		//	));
-		//	tabAlumno.setBounds(313, 60, 379, 327);
-		//	tabAlumno.addMouseListener(new MouseAdapter() {
-		//		@Override
-		//		public void mouseClicked(MouseEvent e) {
-		//			int filaSeleccionada = tabAlumno.getSelectedRow();
-		//			if (filaSeleccionada != -1) {
-		//				DefaultTableModel model = (DefaultTableModel) tabAlumno.getModel();
-		//				tfNoControl.setText(model.getValueAt(filaSeleccionada, 1).toString());
-		//				tfNombre.setText(model.getValueAt(filaSeleccionada, 2).toString());
-		//	//			tfHoraEntrada.setText(model.getValueAt(filaSeleccionada, 3).toString());
-			//			tfHoraSalida.setText(model.getValueAt(filaSeleccionada, 4).toString());
-			//			tfFecha.setText(model.getValueAt(filaSeleccionada, 5).toString());
-			//		}
-			//	//}
-			//});
-			//frmBitacora.getContentPane().add(tabAlumno);
-		//tabAlumno.setBounds(313, 60, 252, 327);
-		//frmBitacora.getContentPane().add(tabAlumno);
-		
-		
-		
-		
-		
-		
+        // Inicialización del TimePicker para la hora de entrada
+        TimePickerSettings timeSettingsEntrada = new TimePickerSettings();
+        timeSettingsEntrada.setFormatForDisplayTime("HH:mm");
+        tpHoraEntrada = new TimePicker(timeSettingsEntrada);
+        tpHoraEntrada.setBounds(171, 179, 91, 23);
+        // Configurar hora actual
+        tpHoraEntrada.setTimeToNow();
+        frmBitacora.getContentPane().add(tpHoraEntrada);
+        // etiqueta hora de salida
 		JLabel lbHoraSalida = new JLabel("Hora de salida");
 		lbHoraSalida.setBounds(42, 266, 74, 35);
 		lbHoraSalida.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		frmBitacora.getContentPane().add(lbHoraSalida);
-		
-		//tfHoraSalida = new JTextField();
-		//tfHoraSalida.setBounds(171, 284, 96, 19);
-		//tfHoraSalida.addKeyListener(new KeyAdapter() {
-		//	@Override
-		//	public void keyTyped(KeyEvent e) {
-		//		if(tfHoraSalida.getText().length()>=5) {
-		//			e.consume();
-		//		}
-		//	}
-		//});
-		//frmBitacora.getContentPane().add(tfHoraSalida);
-		//tfHoraSalida.setColumns(10);
-		
+	      // Inicialización del TimePicker para la hora de salida
+        TimePickerSettings timeSettingsSalida = new TimePickerSettings();
+        timeSettingsSalida.setFormatForDisplayTime("HH:mm");
+        tpHoraSalida = new TimePicker(timeSettingsSalida);
+        tpHoraSalida.setBounds(171, 272, 91, 23);
+        // Configurar hora una hora después de la actual
+        LocalTime horaActual = LocalTime.now();
+        LocalTime horaDespues = horaActual.plusHours(1);
+        tpHoraSalida.setTime(horaDespues);
+        frmBitacora.getContentPane().add(tpHoraSalida);
+	
+		//etiqueta fecha
 		JLabel lbFecha = new JLabel("Fecha");
 		lbFecha.setBounds(42, 370, 124, 15);
 		lbFecha.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		frmBitacora.getContentPane().add(lbFecha);
-		
-	//	tfFecha = new JTextField();
-	//	tfFecha.setBounds(171, 368, 96, 19);
-	//	tfFecha.addKeyListener(new KeyAdapter() {
-	//		@Override
-	//		public void keyTyped(KeyEvent e) {
-	//			if(tfFecha.getText().length()>=10) {
-	//				e.consume();
-	//			}
-	//		}
-	//	});
-	//	frmBitacora.getContentPane().add(tfFecha);
-	//	tfFecha.setColumns(10);
-		
+	     // Inicialización del DatePicker
+        DatePickerSettings dateSettings = new DatePickerSettings();
+        dateSettings.setFormatForDatesCommonEra("dd/MM/yyyy");
+        dpFecha = new DatePicker(dateSettings);
+        dpFecha.setBounds(130, 367, 174, 22);
+        // Configurar fecha actual
+        dpFecha.setDateToToday();
+        frmBitacora.getContentPane().add(dpFecha);
+
+		//Botón de registrar
 		JButton btnRegistrar = new JButton("Registrar");
 		btnRegistrar.setBounds(42, 452, 86, 23);
 		btnRegistrar.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnRegistrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				BitacoraCecytem.noControl=tfNoControl.getText();
-				BitacoraCecytem.nombrePlantel=tfNombre.getText();
-			       //BitacoraCecytem.horaEntrada = getFormattedTime(tpHoraEntrada);
-		            //BitacoraCecytem.horaSalida = getFormattedTime(tpHoraSalida);
-				  try {
-			            // Verifica que timePicker no sea null antes de usarlo
-					  String horaString;
-			            if (tpHoraEntrada != null) {
-			                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-			                horaString = timeFormat.format(tpHoraEntrada.getTime());
-			            } else {
-			                // Manejo cuando tpHoraEntrada es null
-			            	 horaString = "00:00"; // O la fecha que desees para manejar nulos
-			            }
-                        BitacoraCecytem.horaEntrada = horaString;
-                        
-                        String horaSalida;
-			            if (tpHoraSalida != null) {
-			            	   SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-				                horaSalida = timeFormat.format(tpHoraSalida.getTime());
-			            } else {
-			                // Manejo cuando tpHoraSalida es null
-			                horaSalida = "00:00"; // Valor por defecto o mensaje de error
-			            }
-			            BitacoraCecytem.horaSalida = horaSalida;
-			            String fechaString;
-			            if (dtFecha != null && dtFecha.getDate() != null) {
-			                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			                fechaString = dateFormat.format(dtFecha.getDate());
-			            } else {
-			                // Manejo cuando dtFecha es null o dtFecha.getDate() es null
-			            	 fechaString = "0000-00-00";
-			            }
-			         // Asignar a BitacoraCecytem.fecha
-			            BitacoraCecytem.fecha = fechaString;
-			           
+				BitacoraCecytem.nombrePlantel=taNombre.getText();
+				//horaEntrada
+		
+			    // Obtener hora de entrada desde el TimePicker
+			    String horaEntrada = obtenerHora(tpHoraEntrada);
+			    BitacoraCecytem.horaEntrada = horaEntrada;
+
+			    // Obtener hora de salida desde el TimePicker
+			    String horaSalida = obtenerHora(tpHoraSalida);
+			    BitacoraCecytem.horaSalida = horaSalida;
+
+			    // Obtener fecha desde el DatePicker
+			    String fecha = obtenerFecha(dpFecha);
+			    BitacoraCecytem.fecha = fecha;
+				 
 			            conexion.registrarAlumno();
 			            limpiar();
-			        } catch (NullPointerException ex) {
-			            // Manejo de la excepción
-			            ex.printStackTrace();
-			            // Otro manejo según necesidad
-			        }
-				//conexion.registrarAlumno();
-				//if (conexion.registrarAlumno()) {
-				//	 mostrarDatos();
-		        //}
-			   // limpiar();
 		
 			}
 		});
 		frmBitacora.getContentPane().add(btnRegistrar);
-		
+		//Botón de actualizar
 		JButton btnActualizar = new JButton("Actualizar");
 		btnActualizar.setBounds(156, 452, 96, 23);
 		btnActualizar.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				BitacoraCecytem.noControl=tfNoControl.getText();
-				BitacoraCecytem.nombrePlantel=tfNombre.getText();
-				  try {
-			            // Verifica que timePicker no sea null antes de usarlo
-					  String horaString;
-			            if (tpHoraEntrada != null) {
-			                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-			                horaString = timeFormat.format(tpHoraEntrada.getTime());
-			            } else {
-			                // Manejo cuando tpHoraEntrada es null
-			            	 horaString = "00:00"; // O la fecha que desees para manejar nulos
-			            }
-                      BitacoraCecytem.horaEntrada = horaString;
-                      
-                      String horaSalida;
-			            if (tpHoraSalida != null) {
-			            	   SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-				                horaSalida = timeFormat.format(tpHoraSalida.getTime());
-			            } else {
-			                // Manejo cuando tpHoraSalida es null
-			                horaSalida = "00:00"; // Valor por defecto o mensaje de error
-			            }
-			            BitacoraCecytem.horaSalida = horaSalida;
-			            String fechaString;
-			            if (dtFecha != null && dtFecha.getDate() != null) {
-			                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			                fechaString = dateFormat.format(dtFecha.getDate());
-			            } else {
-			                // Manejo cuando dtFecha es null o dtFecha.getDate() es null
-			            	 fechaString = "0000-00-00";
-			            }
-			         // Asignar a BitacoraCecytem.fecha
-			            BitacoraCecytem.fecha = fechaString;
-			           
-			            conexion.actualizarAlumno();
-			            limpiar();
-			        } catch (NullPointerException ex) {
-			            // Manejo de la excepción
-			            ex.printStackTrace();
-			            // Otro manejo según necesidad
-			        }
-			      // BitacoraCecytem.horaEntrada = getFormattedTime(tpHoraEntrada);
-		            //BitacoraCecytem.horaSalida = getFormattedTime(tpHoraSalida);
-				//BitacoraCecytem.fecha=dtFecha.getDate().toString();
-				//conexion.actualizarAlumno();
-			    //if (conexion.actualizarAlumno()) {
-			   // 	 mostrarDatos();
-		        //}
-				//limpiar();
-				//mostrarDatos();
+				BitacoraCecytem.nombrePlantel=taNombre.getText();
+				//horaEntrada
+				
+			    // Obtener hora de entrada desde el TimePicker
+			    String horaEntrada = obtenerHora(tpHoraEntrada);
+			    BitacoraCecytem.horaEntrada = horaEntrada;
+
+			    // Obtener hora de salida desde el TimePicker
+			    String horaSalida = obtenerHora(tpHoraSalida);
+			    BitacoraCecytem.horaSalida = horaSalida;
+
+			    // Obtener fecha desde el DatePicker
+			    String fecha = obtenerFecha(dpFecha);
+			    BitacoraCecytem.fecha = fecha;
+			     conexion.actualizarAlumno();
+			     limpiar();
+
 			}
 		});
 		frmBitacora.getContentPane().add(btnActualizar);
-		
+		//Botón de eliminar alumno 
 		JButton btnBaja = new JButton("Baja");
 		btnBaja.setBounds(262, 452, 74, 23);
 		btnBaja.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnBaja.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-		        //if (conexion.eliminarAlumno()) {
-		       // 	mostrarDatos();
-		        //}
+
 				conexion.eliminarAlumno();
 		        limpiar();
               
 			}
 		});
 		frmBitacora.getContentPane().add(btnBaja);
-		
+		//Botón de salir 
 		JButton btnSalir = new JButton("Salir");
 		btnSalir.setBounds(360, 452, 61, 23);
 		btnSalir.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -338,7 +229,7 @@ public class frmBitacora {
 			}
 		});
 		frmBitacora.getContentPane().add(btnSalir);
-		
+		//Botón de consultar 
 		JButton btnConsultar = new JButton("Consultar");
 		btnConsultar.setBounds(449, 452, 98, 23);
 		btnConsultar.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -346,87 +237,88 @@ public class frmBitacora {
 			public void actionPerformed(ActionEvent e) {
 				conexion.consultarAlumno();
 				tfNoControl.setText(BitacoraCecytem.noControl);
-				tfNombre.setText(BitacoraCecytem.nombrePlantel);
-				tpHoraEntrada.setText(BitacoraCecytem.horaEntrada != null ? BitacoraCecytem.horaEntrada : "");
-				tpHoraSalida.setText(BitacoraCecytem.horaSalida != null ? BitacoraCecytem.horaSalida : "");
-				dtFecha.setText(BitacoraCecytem.fecha != null ? BitacoraCecytem.fecha : "");
+				taNombre.setText(BitacoraCecytem.nombrePlantel);
+		        // Establecer la hora de entrada en el TimePicker
+		        if (BitacoraCecytem.horaEntrada != null && !BitacoraCecytem.horaEntrada.isEmpty()) {
+		            LocalTime horaEntrada = LocalTime.parse(BitacoraCecytem.horaEntrada, DateTimeFormatter.ofPattern("HH:mm"));
+		            tpHoraEntrada.setTime(horaEntrada);
+		        }
+
+		        // Establecer la hora de salida en el TimePicker
+		        if (BitacoraCecytem.horaSalida != null && !BitacoraCecytem.horaSalida.isEmpty()) {
+		            LocalTime horaSalida = LocalTime.parse(BitacoraCecytem.horaSalida, DateTimeFormatter.ofPattern("HH:mm"));
+		            tpHoraSalida.setTime(horaSalida);
+		        }
+
+		        // Establecer la fecha en el DatePicker
+		        if (BitacoraCecytem.fecha != null && !BitacoraCecytem.fecha.isEmpty()) {
+		            LocalDate fecha = LocalDate.parse(BitacoraCecytem.fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		            dpFecha.setDate(fecha);
+		        }
 			}
 		});
 		frmBitacora.getContentPane().add(btnConsultar);
 		
-		TimePicker tpHoraEntrada = new TimePicker();
-		tpHoraEntrada.setBounds(176, 179, 91, 23);
-		  tpHoraEntrada.setTime(LocalTime.now());
-		frmBitacora.getContentPane().add(tpHoraEntrada);
-		
-	     // Definir un formateador de fecha personalizado
-        dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		TimePicker tpHoraSalida = new TimePicker();
-		tpHoraSalida.setBounds(171, 266, 91, 23);
-		  tpHoraSalida.setTime(LocalTime.now().plusHours(1));
-		frmBitacora.getContentPane().add(tpHoraSalida);
-		
-		DatePicker dtFecha = new DatePicker();
-        // Obtener la fecha actual y formatearla
-        LocalDate fechaHoy = LocalDate.now();
-        String fechaFormateada = fechaHoy.format(dateFormatter);
-
-        // Configurar el texto inicial del DatePicker
-        dtFecha.setText(fechaFormateada);
-		dtFecha.setBounds(162, 367, 174, 22);
-
-		frmBitacora.getContentPane().add(dtFecha);
-		// Manejar cambios de fecha para actualizar el valor interno del DatePicker
-        dtFecha.addDateChangeListener(new DateChangeListener() {
+	    taNombre = new JTextArea();
+        taNombre.setBounds(175, 100, 129, 67);
+        taNombre.addKeyListener(new KeyAdapter() {
             @Override
-            public void dateChanged(DateChangeEvent event) {
-                // Obtener la fecha seleccionada en el formato deseado
-                LocalDate fechaSeleccionada = event.getNewDate();
-                String fechaFormateada = fechaSeleccionada.format(dateFormatter);
+            public void keyTyped(KeyEvent e) {
+                // Validación de 100 caracteres
+                if (taNombre.getText().length() >= 100) {
+                    e.consume();
+                }
 
-                // Actualizar el texto del DatePicker con el formato deseado
-                dtFecha.setText(fechaFormateada);
+                // Validar solo letras, números, espacios, puntos, comas, ñ, tildes y letras con acentos
+                char c = e.getKeyChar();
+                if (!(Character.isLetterOrDigit(c) || c == ' ' || c == '.' || c == ',' || 
+                      c == 'ñ' || c == 'Ñ' ||
+                      c == 'á' || c == 'é' || c == 'í' || c == 'ó' || c == 'ú' ||
+                      c == 'Á' || c == 'É' || c == 'Í' || c == 'Ó' || c == 'Ú')) {
+                    e.consume();
+                }
             }
         });
-
+        frmBitacora.getContentPane().add(taNombre);
 	}
-	
+	private String obtenerHora(TimePicker timePicker) {
+	    String hora = "";
+	    try {
+	        String horaTexto = timePicker.getText();
+	        if (horaTexto != null && !horaTexto.isEmpty()) {
+	            hora = horaTexto.substring(0, 5); // Obtener solo HH:mm
+	        }
+	    } catch (Exception ex) {
+	        ex.printStackTrace(); // Manejar cualquier excepción que pueda ocurrir
+	    }
+	    return hora;
+	}
 
-	//private void mostrarDatos() {
-	//    List<BitacoraCecytem> alumnos = conexion.obtenerAlumnos();
-	//    DefaultTableModel model = (DefaultTableModel) tabAlumno.getModel();
-	//    model.setRowCount(0); // Limpiar tabla antes de cargar datos
-//
-	//    Set<String> idsVistos = new HashSet<>(); // Utilizamos un set para almacenar IDs ya vistos
-//
-	 //   for (BitacoraCecytem alumno : alumnos) {
-	 //       if (!idsVistos.contains(alumno.id)) { // Si el ID no está en el set, agregamos el registro a la tabla
-	// //           model.addRow(new Object[]{alumno.id, alumno.noControl, alumno.nombrePlantel, alumno.horaEntrada, alumno.horaSalida, alumno.fecha});
-	//            idsVistos.add(alumno.id); // Agregamos el ID al set de IDs vistos
-	//        }
-	//    }
-	//}
+	// Método para obtener la fecha desde el DatePicker
+	private String obtenerFecha(DatePicker datePicker) {
+	    String fecha = "";
+	    try {
+	        String fechaTexto = datePicker.getText();
+	        if (fechaTexto != null && !fechaTexto.isEmpty()) {
+	            fecha = fechaTexto; // La fecha ya viene en formato dd/MM/yyyy
+	        }
+	    } catch (Exception ex) {
+	        ex.printStackTrace(); // Manejar cualquier excepción que pueda ocurrir
+	    }
+	    return fecha;
+	}
 
 	public void limpiar() {
 	    // Limpiar campos de texto
 	    tfNoControl.setText("");
-	    tfNombre.setText("");
-	    //tfHoraEntrada.setText("");
-	    //tfHoraSalida.setText("");
-	   // tfFecha.setText("");
+	    taNombre.setText("");
 
-	    // Limpiar TimePickers
-        if (tpHoraEntrada != null) {
-            tpHoraEntrada.clear();
-        }
-        if (tpHoraSalida != null) {
-            tpHoraSalida.clear();
-        }
-
-        // Limpiar DatePicker
-        if (dtFecha != null) {
-            dtFecha.setDateToToday(); // O establecer a null si no deseas una fecha por defecto
-        }
+	    // Limpiar TimePicker de hora de entrada
+	    tpHoraEntrada.clear();
+	    // Limpiar TimePicker de hora de salida
+	    tpHoraSalida.clear();
+	    // Limpiar DatePicker de fecha
+	    dpFecha.clear();
 
 	    // Resetear variables estáticas en la clase BitacoraCecytem
 	    BitacoraCecytem.noControl = "";
@@ -434,15 +326,5 @@ public class frmBitacora {
 	    BitacoraCecytem.horaEntrada = "";
 	    BitacoraCecytem.horaSalida = "";
 	    BitacoraCecytem.fecha = "";
-	}
-	private String getFormattedTime(TimePicker timePicker) {
-	    LocalTime time = timePicker.getTime();
-	    if (time != null) {
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-	        return time.format(formatter);
-	    } else {
-	        // Maneja el caso de tiempo nulo, quizá retornando una hora por defecto o un mensaje de error.
-	        return "00:00:00";
-	    }
 	}
 }

@@ -1,23 +1,30 @@
+/**
+ * Nombre del proyecto:Bitacoracecytem
+ * Descripción:Aplicación para llevar un control de registro de alumnos que estan en un área especifica 
+ * Fecha:04/07/2024
+ * Autor:Luis Fernando Mendez Barrera
+ * Versión 1.0.0
+ */
+// importaciones
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.swing.JOptionPane;
-/****/
+/**Clase DataBitacora:clase donde se almacenan los controlaodres que se emplearan en la aplicación.**/
 public class DataBitacora {
- 
+    //controlador para la conexión a mysql
 	private static String controlador ="com.mysql.cj.jdbc.Driver";
+	//nombre del enlace a conectarse y base 
 	private static String url ="jdbc:mysql://localhost:3306/bitcecytem";
+	//usuario
 	private static String user="root";
+	//contraseña
 	private static String pass="";
-	
+	//inicia la clase de los valores que son get y set
 	BitacoraCecytem var= new BitacoraCecytem();
+	//resultado
 	boolean resultado=false;
 	static {
 		try {
@@ -28,7 +35,7 @@ public class DataBitacora {
 		}
 	}
 
-/****/
+/****función que permite la conexión a la base de datos ****/
 public Connection conectar() {
 	Connection conexion=null;
 	try {
@@ -41,7 +48,7 @@ public Connection conectar() {
 	return conexion;
 }
 
-/****/
+/****Función para registrar alumno ******/
 public boolean registrarAlumno() {
 	DataBitacora conexion=new DataBitacora();
 	Connection cn=null;
@@ -80,7 +87,7 @@ public boolean registrarAlumno() {
 	return resultado;
 }
 
-/****/
+/****Función para consultar alumno ******/
 public boolean consultarAlumno() {
 	DataBitacora conexion=new DataBitacora();
 	Connection cn=null;
@@ -116,7 +123,7 @@ public boolean consultarAlumno() {
 	return resultado;
 	
 }
-/****/
+/****función para actualizar alumno****/
 public boolean actualizarAlumno() {
 	DataBitacora conexion=new DataBitacora();
 	Connection cn=null;
@@ -152,7 +159,7 @@ public boolean actualizarAlumno() {
              }
 
 
-/****/
+/***Función para eliminar el alumno****/
 public boolean eliminarAlumno() {
 	DataBitacora conexion=new DataBitacora();
 	Connection cn= null;
@@ -182,44 +189,6 @@ public boolean eliminarAlumno() {
 return resultado;
 
 }
-
-//public List<BitacoraCecytem> obtenerAlumnos() {
-   // List<BitacoraCecytem> alumnos = new ArrayList<>();
-    //Connection cn = null;
-    //PreparedStatement ps = null;
-    //ResultSet rs = null;
-    
-    //try {
-        //cn = conectar();
-        //String query = "SELECT * FROM contactos";
-       // ps = cn.prepareStatement(query);
-       // rs = ps.executeQuery();
-
-        //while (rs.next()) {
-           // BitacoraCecytem alumno = new BitacoraCecytem();  
-         //   alumno.id = rs.getString(1);
-        //    alumno.noControl = rs.getString(2);
-        //    alumno.nombrePlantel = rs.getString(3);
-          //  alumno.horaEntrada = rs.getString(4);
-      //      alumno.horaSalida = rs.getString(5);
-         //   alumno.fecha = rs.getString(6);
-           // alumnos.add(alumno);
-       // }
-    //} catch (SQLException e) {
-      //  e.printStackTrace();
-   //     JOptionPane.showMessageDialog(null, "Ocurrió un problema, inténtelo más tarde");
-  //  } finally {
-       // try {
-          //  if (rs != null) rs.close();
-         //   if (ps != null) ps.close();
-        //    if (cn != null) cn.close();
-       // } catch (SQLException e) {
-         //   e.printStackTrace();
-       // }
-    //}
-  //  return alumnos;
-//}
-	
 }
 
 
