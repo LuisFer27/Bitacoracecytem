@@ -189,7 +189,7 @@ public class frmBitacora {
 		btnActualizar.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			   				
+				if (validarCampos()) {				
 			    BitacoraCecytem.noControl=tfNoControl.getText();
 				BitacoraCecytem.nombrePlantel=taNombre.getText();
 				//horaEntrada
@@ -207,7 +207,7 @@ public class frmBitacora {
 			    BitacoraCecytem.fecha = fecha;
 			     conexion.actualizarAlumno();
 			     limpiar();}
-
+			}
 
 			
 		});

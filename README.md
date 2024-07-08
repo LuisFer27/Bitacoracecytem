@@ -4,7 +4,7 @@ Prohgrama que permite consultar datos a partir de un número de control,hacer nu
 
 ## Funcionalidad
 
-Bitacora que permite guardar registros de alumnos mediante numero de control de igual forma consultar eliminar y modificar registros 
+Bitacora que permite guardar registros de alumnos mediante numero de control de igual forma consultar eliminar y modificar registros
 
 **Interfaz:**
 
