@@ -8,7 +8,7 @@
 
 //clase bitacora cecytem donde se almacenaran los get y sets
 public class BitacoraCecytem {
-
+//valores a obtener ya que todos son del tipo string 
 static String id;
 static String noControl;
 static String nombrePlantel;
@@ -43,7 +43,7 @@ public static String getHoraEntrada() {
 public static void setHoraEntrada(String horaEntrada) {
 	BitacoraCecytem.horaEntrada = horaEntrada;
 }
-//get y set de ña hora de salida
+//get y set de la hora de salida
 public static String getHoraSalida() {
 	return horaSalida;
 }

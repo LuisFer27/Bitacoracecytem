@@ -14,6 +14,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -157,7 +159,8 @@ public class frmBitacora {
 		btnRegistrar.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnRegistrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				BitacoraCecytem.noControl=tfNoControl.getText();
+			    if (validarCampos()) {				
+			    BitacoraCecytem.noControl=tfNoControl.getText();
 				BitacoraCecytem.nombrePlantel=taNombre.getText();
 				//horaEntrada
 		
@@ -174,7 +177,8 @@ public class frmBitacora {
 			    BitacoraCecytem.fecha = fecha;
 				 
 			            conexion.registrarAlumno();
-			            limpiar();
+			            limpiar();}
+
 		
 			}
 		});
@@ -185,7 +189,8 @@ public class frmBitacora {
 		btnActualizar.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				BitacoraCecytem.noControl=tfNoControl.getText();
+			   				
+			    BitacoraCecytem.noControl=tfNoControl.getText();
 				BitacoraCecytem.nombrePlantel=taNombre.getText();
 				//horaEntrada
 				
@@ -201,9 +206,10 @@ public class frmBitacora {
 			    String fecha = obtenerFecha(dpFecha);
 			    BitacoraCecytem.fecha = fecha;
 			     conexion.actualizarAlumno();
-			     limpiar();
+			     limpiar();}
 
-			}
+
+			
 		});
 		frmBitacora.getContentPane().add(btnActualizar);
 		//Botón de eliminar alumno 
@@ -212,9 +218,11 @@ public class frmBitacora {
 		btnBaja.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnBaja.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				conexion.eliminarAlumno();
+						
+			    conexion.eliminarAlumno();
 		        limpiar();
+		        
+
               
 			}
 		});
@@ -326,5 +334,43 @@ public class frmBitacora {
 	    BitacoraCecytem.horaEntrada = "";
 	    BitacoraCecytem.horaSalida = "";
 	    BitacoraCecytem.fecha = "";
+	}
+	//validación de campos 
+	private boolean validarCampos() {
+	    if (tfNoControl.getText().trim().isEmpty()) {
+	        // Mostrar mensaje de error
+	        mostrarMensajeError("El campo Número de Control es obligatorio.");
+	        return false;
+	    }
+
+	    if (taNombre.getText().trim().isEmpty()) {
+	        // Mostrar mensaje de error
+	        mostrarMensajeError("El campo Nombre de la institución es obligatorio.");
+	        return false;
+	    }
+
+	    if (tpHoraEntrada.getTime() == null) {
+	        // Mostrar mensaje de error
+	        mostrarMensajeError("El campo Hora de Entrada es obligatorio.");
+	        return false;
+	    }
+
+	    if (tpHoraSalida.getTime() == null) {
+	        // Mostrar mensaje de error
+	        mostrarMensajeError("El campo Hora de Salida es obligatorio.");
+	        return false;
+	    }
+
+	    if (dpFecha.getDate() == null) {
+	        // Mostrar mensaje de error
+	        mostrarMensajeError("El campo Fecha es obligatorio.");
+	        return false;
+	    }
+
+	    return true;
+	}
+	//mensaje de error si no hay nada ingresado
+	private void mostrarMensajeError(String mensaje) {
+	    JOptionPane.showMessageDialog(frmBitacora, mensaje, "Error de Validación", JOptionPane.ERROR_MESSAGE);
 	}
 }
