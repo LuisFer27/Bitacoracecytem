@@ -1,6 +1,6 @@
 # BitacoraCecytem
 
-Prohgrama que permite consultar datos a partir de un número de control,hacer nuevos registros,eliminar registros y actualizarlos de igual forma visualizarlos a la hora de consultar.
+Programa en java puro que permite consultar datos a partir de un número de control,hacer nuevos registros,eliminar registros y actualizarlos de igual forma visualizarlos a la hora de consultar.
 
 ## Funcionalidad
 
